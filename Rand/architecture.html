@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boating in the Baltics - Architecture</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 40px; color: #333; max-width: 900px; margin: 0 auto; background-color: #f9f9f9; }
+        .mermaid { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 40px; display: flex; justify-content: center; }
+        h1 { color: #111; }
+        h2 { color: #555; margin-top: 40px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Boating in the Baltics: System Architecture</h1>
+    <p>This is a rendered version of the Mermaid diagrams from <code>SYSTEM_ARCHITECTURE.md</code>.</p>
+    
+    <h2>1. The Big Picture</h2>
+    <div class="mermaid">
+        graph LR
+            subgraph External World
+                AIS[AISStream.io Feed]
+                CSV[HELCOM ports.csv]
+            end
+
+            subgraph Backend
+                DB[SQLite DB]
+                Django[Django Daphne Server]
+                Redis[Redis Channel Layer]
+            end
+
+            subgraph Frontend
+                React[React Vite SPA]
+                Mapbox[Mapbox GL JS]
+            end
+
+            AIS --->|Live Stream| Django
+            CSV --->|Static Load| DB
+            Django --->|Read or Write| DB
+            DB --->|Read Data| Django
+            Django --->|HTTP and WebSockets| React
+            React ---> Mapbox
+            Django -.->|Publish| Redis
+            Redis -.->|Broadcast| Django
+    </div>
+
+    <h2>2. Background Ingestion & WebSocket Broadcast</h2>
+    <div class="mermaid">
+        sequenceDiagram
+            participant AIS as AISStream
+            participant Ingest as ingest_ais.py
+            participant DB as SQLite
+            participant Redis as Redis
+            participant Consumer as WebSocket Consumer
+            participant React as Frontend Viewer
+
+            AIS->>Ingest: Ship moves to 59N 24E
+            Ingest->>DB: Save new VesselPosition()
+            Ingest->>Redis: Broadcast: Ship moved!
+            Redis->>Consumer: Hear broadcast
+            Consumer->>React: Send JSON WebSocket Message
+    </div>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+</html>
