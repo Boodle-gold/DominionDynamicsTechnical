@@ -5,10 +5,8 @@ from asgiref.sync import sync_to_async
 
 
 class VesselConsumer(AsyncWebsocketConsumer):
-    """
-    WebSocket consumer that broadcasts vessel position updates
-    and zone alerts to connected frontend clients.
-    """
+    # websocket consumer that broadcasts vessel position updates
+    # as well as zone alerts!
 
     async def connect(self):
         self.group_name = "vessel_updates"
@@ -25,7 +23,7 @@ class VesselConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
     async def receive(self, text_data):
-        """Handle messages from frontend (e.g., zone creation)."""
+        # Handle front end updates
         data = json.loads(text_data)
         msg_type = data.get("type")
 
@@ -33,21 +31,21 @@ class VesselConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"type": "pong"}))
 
     async def vessel_update(self, event):
-        """Broadcast vessel position update to all clients."""
+        # Update vessels for all clients
         await self.send(text_data=json.dumps({
             "type": "vessel_update",
             "vessels": event["vessels"],
         }))
 
     async def zone_alert(self, event):
-        """Broadcast zone alert to all clients."""
+        # Update zone alerts for all clients
         await self.send(text_data=json.dumps({
             "type": "zone_alert",
             "alert": event["alert"],
         }))
 
     async def drone_update(self, event):
-        """Broadcast drone position update."""
+        # Update drone for all clients
         await self.send(text_data=json.dumps({
             "type": "drone_update",
             "drone": event["drone"],

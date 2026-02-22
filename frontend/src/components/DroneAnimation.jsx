@@ -7,27 +7,24 @@ import { interpolate, haversineDistance, bearing } from '../utils/geo.js';
  * Dismiss sends it back along the path, erasing the trail as it returns.
  */
 
-// Föglö Island, Åland — drone base location
+// Föglö Island, Åland. Seemed like as good a spot as any I could find.
 export const DRONE_BASE = { lat: 60.0167, lng: 20.3833 };
 
-const DRONE_SPEED_KMH = 150;          // slower, more realistic observation drone
-const MIN_TRANSIT_MS = 4000;         // floor so short trips are still visible
-const MAX_TRANSIT_MS = 90000;        // cap so far trips aren't tedious
-const ORBIT_RADIUS = 0.005;        // ~500 m in degrees
-const ORBIT_PERIOD_MS = 4000;         // full circle every 4 s
+const DRONE_SPEED_KMH = 150;
+const MIN_TRANSIT_MS = 4000;
+const MAX_TRANSIT_MS = 90000;
+const ORBIT_RADIUS = 0.005;
+const ORBIT_PERIOD_MS = 4000;
 
 export function useDrone() {
     const [droneState, setDroneState] = useState(null);
     const animFrameRef = useRef(null);
 
     const deployDrone = useCallback((startLat, startLng, targetLat, targetLng, vesselName) => {
-        // Cancel any existing animation
         if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
         const start = [startLng, startLat];
         const end = [targetLng, targetLat];
-
-        // Distance-based travel time at DRONE_SPEED_KMH
         const distKm = haversineDistance(startLat, startLng, targetLat, targetLng);
         const rawMs = (distKm / DRONE_SPEED_KMH) * 3_600_000;
         const duration = Math.max(MIN_TRANSIT_MS, Math.min(MAX_TRANSIT_MS, rawMs));
@@ -40,12 +37,10 @@ export function useDrone() {
             status: 'in_transit',
             position: { lat: startLat, lng: startLng },
             heading,
-            // Store base + target for flight path rendering
             baseLat: startLat,
             baseLng: startLng,
             targetLat,
             targetLng,
-            // pathProgress: 1 = full path visible, shrinks to 0 on return
             pathProgress: 1,
         });
 
@@ -88,7 +83,7 @@ export function useDrone() {
             const lat = centerLat + ORBIT_RADIUS * Math.cos(angle);
             const lng = centerLng + ORBIT_RADIUS * Math.sin(angle);
 
-            // Face toward the vessel (center of orbit)
+            // Face toward the vessel 
             const hdg = bearing(lat, lng, centerLat, centerLng);
 
             setDroneState(prev => ({
@@ -113,7 +108,7 @@ export function useDrone() {
 
             const { position, baseLat, baseLng, vesselName } = prev;
 
-            // Start return animation (current position → base)
+            // Start return animation
             const start = [position.lng, position.lat];
             const end = [baseLng, baseLat];
             const distKm = haversineDistance(position.lat, position.lng, baseLat, baseLng);
@@ -132,7 +127,7 @@ export function useDrone() {
                 const hdg = bearing(lat, lng, baseLat, baseLng);
 
                 if (t >= 1) {
-                    // Arrived at base — clear everything
+                    // Arrived at base, clear state
                     setDroneState(null);
                     return;
                 }
@@ -143,7 +138,6 @@ export function useDrone() {
                     heading: hdg,
                     status: 'returning',
                     // Shrink path from target end toward base as drone returns
-                    // pathStart moves from target toward base (the drone position)
                     pathProgress: 1 - eased,
                 }) : null);
 

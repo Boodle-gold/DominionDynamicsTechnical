@@ -19,8 +19,6 @@ export function useWebSocket(onMessage) {
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         const host = window.location.host;
         const defaultUrl = `${protocol}://${host}/ws/vessels/`;
-
-        // Use environment variable if provided (for Vercel deployment), else fallback to default
         const url = import.meta.env.VITE_WS_URL || defaultUrl;
 
         try {

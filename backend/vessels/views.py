@@ -52,7 +52,7 @@ class VesselViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ZoneViewSet(viewsets.ModelViewSet):
-    """API endpoint for zones."""
+    # API endpoint for zones
     queryset = Zone.objects.all()
 
     def get_serializer_class(self):
@@ -62,7 +62,7 @@ class ZoneViewSet(viewsets.ModelViewSet):
 
 
 class ZoneAlertViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for zone alerts."""
+    # API endpoint for zone alerts
     queryset = ZoneAlert.objects.all()
     serializer_class = ZoneAlertSerializer
 
@@ -73,19 +73,19 @@ class ZoneAlertViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class DroneViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for drone simulations."""
+    # API endpoint for drone simulations.
     queryset = DroneSimulation.objects.all()
     serializer_class = DroneSimulationSerializer
 
 
 class PortViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for HELCOM ports."""
+    # API endpoint for HELCOM ports.
     queryset = Port.objects.all()
     serializer_class = PortSerializer
 
     @action(detail=False, methods=["post"])
     def deploy(self, request):
-        """Deploy a drone to a vessel."""
+        # Deploy a drone to a vessel.
         vessel_id = request.data.get("vessel_id")
         if not vessel_id:
             return Response(
@@ -108,7 +108,7 @@ class PortViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Drone base: Governors Island
+        # Drone base: Island
         base_lat, base_lng = 40.6892, -74.0169
 
         drone = DroneSimulation.objects.create(

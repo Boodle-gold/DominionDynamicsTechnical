@@ -1081,7 +1081,7 @@ body,
   border-color: var(--border-subtle) !important;
 }
 
-/* Make polygon tool button larger, with white background and black icon */
+/* Polygon button*/
 .mapboxgl-ctrl-group button.mapbox-gl-draw_polygon,
 .mapboxgl-ctrl-group button.mapbox-gl-draw_trash {
   width: 38px !important;

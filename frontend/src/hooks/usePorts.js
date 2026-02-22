@@ -16,7 +16,7 @@ export function usePorts() {
                 throw new Error(`Error fetching ports: ${response.statusText}`);
             }
             const data = await response.json();
-            // Data might be paginated, so handle `.results` or raw array
+            // Data pagination handeling
             const portsData = data.results ? data.results : data;
             setPorts(portsData);
         } catch (err) {

@@ -6,7 +6,7 @@ import { getVesselColor } from '../utils/colors.js';
 import { createZone } from '../services/api.js';
 import { DRONE_BASE } from './DroneAnimation.jsx';
 
-// You'll need a Mapbox token — set VITE_MAPBOX_TOKEN in a .env file
+// Mapbox token
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
 const ARCTIC_CENTER = [20, 59];
@@ -118,7 +118,7 @@ export default function MapView({
         map.on('draw.create', async (e) => {
             const feature = e.features[0];
             if (feature.geometry.type === 'Polygon') {
-                // Auto-name: Zone A, Zone B, etc.
+                // Auto-name
                 const letter = String.fromCharCode(65 + (zones?.length || 0) % 26);
                 const name = `Zone ${letter}`;
                 try {
@@ -131,7 +131,7 @@ export default function MapView({
                 } catch (err) {
                     console.error('Failed to create zone:', err);
                 }
-                // Remove from draw - we'll render via source
+                // Remove from draw
                 draw.deleteAll();
             }
         });
@@ -143,7 +143,7 @@ export default function MapView({
             canvas.width = size;
             canvas.height = size;
             const ctx = canvas.getContext('2d');
-            // Draw an upward-pointing triangle (will be rotated by heading)
+            // Draw arrow
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.moveTo(size / 2, 2);           // top point
@@ -161,7 +161,7 @@ export default function MapView({
                 data: { type: 'FeatureCollection', features: [] },
             });
 
-            // Vessel arrows — symbol layer with rotation
+            // Vessel arrows
             map.addLayer({
                 id: 'vessel-arrows',
                 type: 'symbol',
@@ -216,7 +216,7 @@ export default function MapView({
                 minzoom: 5,
             });
 
-            // Create Anchor icon for ports
+            // Anchor Icon for the ports
             const anchorSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>`;
             const anchorImg = new Image(24, 24);
             anchorImg.onload = () => {
@@ -323,7 +323,7 @@ export default function MapView({
                 },
             });
 
-            // ── Drone icon (quadrotor silhouette) ────────────
+            // Drone icon
             const droneSize = 48;
             const dc = document.createElement('canvas');
             dc.width = droneSize;
@@ -351,7 +351,7 @@ export default function MapView({
             dctx.arc(cx, cy, 4, 0, Math.PI * 2);
             dctx.fill();
 
-            // Rotors (circles at arm tips)
+            // Rotors
             dctx.strokeStyle = '#ffffff';
             dctx.lineWidth = 1.5;
             [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(([dx, dy]) => {
@@ -360,7 +360,7 @@ export default function MapView({
                 dctx.stroke();
             });
 
-            // Front indicator (small triangle at top)
+            // Front indicator 
             dctx.fillStyle = '#ffffff';
             dctx.beginPath();
             dctx.moveTo(cx, cy - 7);
@@ -377,7 +377,7 @@ export default function MapView({
                 data: { type: 'FeatureCollection', features: [] },
             });
 
-            // Pulse ring (keep as circle)
+            // Pulse ring
             map.addLayer({
                 id: 'drone-pulse',
                 type: 'circle',
@@ -411,7 +411,7 @@ export default function MapView({
                 },
             });
 
-            // ── Drone base icon (simple house) ────────────
+            // Drone base icon 
             const baseSize = 40;
             const bc = document.createElement('canvas');
             bc.width = baseSize;
@@ -419,7 +419,7 @@ export default function MapView({
             const bctx = bc.getContext('2d');
             const bcx = baseSize / 2;
 
-            // House body (rectangle)
+            // House body
             bctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
             bctx.strokeStyle = '#ffffff';
             bctx.lineWidth = 2;
@@ -428,7 +428,7 @@ export default function MapView({
             bctx.fill();
             bctx.stroke();
 
-            // Roof (triangle)
+            // Roof
             bctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
             bctx.beginPath();
             bctx.moveTo(bcx, 6);
@@ -438,7 +438,7 @@ export default function MapView({
             bctx.fill();
             bctx.stroke();
 
-            // Door (small rect)
+            // Door
             bctx.fillStyle = '#ffffff';
             bctx.fillRect(bcx - 3, 26, 6, 8);
 
@@ -653,7 +653,7 @@ export default function MapView({
                 }],
             });
 
-            // Flight path line (dynamic from drone to destination)
+            // Flight path line
             if (pathSource && droneState.position && droneState.targetLat != null) {
                 let pathCoords = null;
                 if (droneState.status === 'in_transit') {

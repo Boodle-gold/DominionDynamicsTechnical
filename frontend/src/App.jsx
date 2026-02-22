@@ -58,7 +58,7 @@ export default function App() {
             const data = await fetchAlerts();
             setAlerts(data.results || data);
         } catch (err) {
-            // Alerts endpoint might return paginated or list
+            console.error('Failed to load alerts:', err);
         }
     };
 
@@ -154,8 +154,8 @@ export default function App() {
                         <polygon points="92,32 92,92 32,62" />
                     </svg>
                     <div className="logo-text">
-                        <div className="logo-line">BOATING IN</div>
-                        <div className="logo-line">THE BALTICS</div>
+                        <div className="logo-line">DOMINION</div>
+                        <div className="logo-line">DYNAMICS</div>
                     </div>
                 </div>
                 <div className="status-indicator">
@@ -218,4 +218,3 @@ export default function App() {
         </>
     );
 }
-

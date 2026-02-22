@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Vessel(models.Model):
-    """A vessel tracked in NYC Harbor."""
+    # Vessel model
 
     SHIP_TYPES = [
         ("cargo", "Cargo"),
@@ -34,7 +34,7 @@ class Vessel(models.Model):
 
 
 class VesselPosition(models.Model):
-    """A recorded position for a vessel."""
+    # Vessel position model
 
     vessel = models.ForeignKey(Vessel, on_delete=models.CASCADE, related_name="positions")
     latitude = models.FloatField()
@@ -55,7 +55,7 @@ class VesselPosition(models.Model):
 
 
 class Zone(models.Model):
-    """A user-defined polygon zone on the map."""
+    # A polygon on the map model
 
     name = models.CharField(max_length=200)
     polygon_json = models.TextField(help_text="GeoJSON polygon coordinates")
@@ -70,7 +70,7 @@ class Zone(models.Model):
 
 
 class ZoneAlert(models.Model):
-    """Alert triggered when a vessel enters or exits a zone."""
+    # Alert model
 
     ALERT_TYPES = [
         ("enter", "Entered Zone"),
@@ -90,7 +90,7 @@ class ZoneAlert(models.Model):
 
 
 class DroneSimulation(models.Model):
-    """A simulated drone deployment to inspect a vessel."""
+   # A simulated drone deployment model
 
     STATUS_CHOICES = [
         ("deploying", "Deploying"),
@@ -115,7 +115,7 @@ class DroneSimulation(models.Model):
 
 
 class Port(models.Model):
-    """HELCOM Baltic Sea Port Data."""
+    # HELCOM Baltic Sea Port Data model
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=100, blank=True, default="")
     latitude = models.FloatField()

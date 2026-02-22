@@ -1,6 +1,7 @@
 """
-Management command to run the AIS ingestion service,
-connecting to aisstream.io and updating vessel positions.
+Runs AIS ingestion
+You have to run it as a django management command
+
 """
 import json
 import asyncio
@@ -15,7 +16,7 @@ from asgiref.sync import async_to_sync
 
 AIS_WS_URL = "wss://stream.aisstream.io/v0/stream"
 
-# Baltic Sea bounding box — aisstream.io uses [[lat, lng], [lat, lng]]
+# Baltic Sea bounding box, AIS uses [[lat, lng], [lat, lng]] for some reason
 BALTIC_BBOX = [
     [settings.BALTIC_BOUNDS["min_lat"], settings.BALTIC_BOUNDS["min_lng"]],
     [settings.BALTIC_BOUNDS["max_lat"], settings.BALTIC_BOUNDS["max_lng"]],
@@ -32,9 +33,8 @@ SHIP_TYPE_MAP = {
     range(36, 38): "pleasure",
 }
 
-
+# Converting from AIS to real words
 def get_ship_type(ais_type):
-    """Convert AIS ship type number to our category."""
     for type_range, category in SHIP_TYPE_MAP.items():
         if ais_type in type_range:
             return category
@@ -71,7 +71,7 @@ class Command(BaseCommand):
             self.stdout.write("\nAIS ingestion stopped.")
 
     async def stream_ais(self, api_key):
-        """Connect to aisstream.io and process messages."""
+        # Connect to AIS and stream messages babyyyy
         subscribe_msg = json.dumps({
             "APIKey": api_key,
             "BoundingBoxes": [BALTIC_BBOX],
@@ -101,7 +101,7 @@ class Command(BaseCommand):
                 await asyncio.sleep(10)
 
     def process_message(self, msg):
-        """Process an AIS message and update the database."""
+        # Process an AIS message and update the database
         msg_type = msg.get("MessageType")
         metadata = msg.get("MetaData", {})
         mmsi = str(metadata.get("MMSI", ""))
@@ -115,7 +115,7 @@ class Command(BaseCommand):
             self.handle_static_data(msg, mmsi, metadata)
 
     def handle_position(self, msg, mmsi, metadata):
-        """Handle a position report message."""
+        # Handle a position report message
         report = msg.get("Message", {}).get("PositionReport", {})
         if not report:
             return
@@ -135,7 +135,7 @@ class Command(BaseCommand):
 
         raw_heading = report.get("TrueHeading", 511)
         cog = report.get("Cog", 0)
-        # AIS heading 511 = "not available"; fall back to Course Over Ground
+        # AIS heading 511 = "not available"
         heading = cog if raw_heading == 511 else raw_heading
 
         pos = VesselPosition.objects.create(
@@ -172,7 +172,7 @@ class Command(BaseCommand):
         )
 
     def handle_static_data(self, msg, mmsi, metadata):
-        """Handle ship static data (name, type, dimensions)."""
+        # Handle ship data
         static = msg.get("Message", {}).get("ShipStaticData", {})
         if not static:
             return

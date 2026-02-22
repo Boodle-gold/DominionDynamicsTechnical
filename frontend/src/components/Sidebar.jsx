@@ -75,7 +75,7 @@ export default function Sidebar({
     );
 }
 
-/* ── Vessel Tab ────────────────────────────────────────────── */
+/* Vessel Tab */
 
 function VesselTab({ vesselList, selectedVesselId, onSelectVessel, vesselInZone }) {
     const [search, setSearch] = useState('');
@@ -133,7 +133,7 @@ function VesselTab({ vesselList, selectedVesselId, onSelectVessel, vesselInZone 
     );
 }
 
-/* ── Zone Tab (inline rename) ──────────────────────────────── */
+/* Zone Tab (inline renaming) */
 
 function ZoneTab({ zones, onDeleteZone, onRenameZone }) {
     if (zones.length === 0) {

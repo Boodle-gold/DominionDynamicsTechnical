@@ -2,7 +2,6 @@
  * REST API client for the Django backend.
  */
 
-// Use environment variable if provided (for Vercel deployment), else fallback to default proxy
 export const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 async function request(path, options = {}) {

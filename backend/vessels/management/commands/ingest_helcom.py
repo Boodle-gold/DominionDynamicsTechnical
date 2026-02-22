@@ -16,7 +16,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"CSV file not found at {csv_path}"))
             return
 
-        # We first group the rows by locode to compute a geographic centroid
+        # There are lots of smaller measurements 
+        # So by taking the geographic average of ones close to each other
+        # It just declutters the map and gives one real port from the 
+        # Helcome data
         bounds = settings.BALTIC_BOUNDS
         grouped_ports = {}
 
@@ -46,7 +49,7 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Parsed {len(grouped_ports)} unique ports from CSV. Proceeding to filter and save...")
 
-        # Clear existing ports to cleanly handle the deduplication
+        # Clear existing ports
         Port.objects.all().delete()
         
         ports_added = 0
@@ -55,7 +58,7 @@ class Command(BaseCommand):
             avg_lat = sum(data["lats"]) / len(data["lats"])
             avg_lng = sum(data["lngs"]) / len(data["lngs"])
             
-            # Filter out ports outside the Baltic Sea bounding box
+            # Filter out ports outside the Baltics
             if not (bounds["min_lat"] <= avg_lat <= bounds["max_lat"] and bounds["min_lng"] <= avg_lng <= bounds["max_lng"]):
                 continue
 

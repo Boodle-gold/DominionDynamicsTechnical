@@ -1,6 +1,5 @@
 """
-Zone checker service: detects when vessels enter or exit user-defined zones
-and creates alerts accordingly.
+Sees if a vessel has interacted with any zones
 """
 import json
 from shapely.geometry import Point, shape
@@ -11,14 +10,11 @@ from vessels.models import Zone, ZoneAlert, Vessel
 
 
 # Track which vessels are currently in which zones
-_vessel_zone_state = {}  # {vessel_id: set(zone_ids)}
+_vessel_zone_state = {}
 
 
 def check_vessel_zones(vessel, latitude, longitude):
-    """
-    Check if a vessel is inside any defined zones.
-    Creates enter/exit alerts as needed and broadcasts via WebSocket.
-    """
+    # See if a vessel has interacted with any zones
     point = Point(longitude, latitude)
     zones = Zone.objects.all()
 

@@ -15,7 +15,7 @@ export function useVessels() {
     const handleWSMessage = useCallback((data) => {
         switch (data.type) {
             case 'initial_data':
-                // Load all vessels from initial payload
+                // Load all vessels from initial message
                 const vesselMap = {};
                 (data.vessels || []).forEach(v => {
                     vesselMap[v.id] = v;
