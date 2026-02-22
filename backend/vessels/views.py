@@ -7,11 +7,11 @@ import asyncio
 import traceback
 import os
 
-from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation, Alert, DroneState
+from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation
 from .serializers import (
     VesselSerializer, VesselDetailSerializer, VesselPositionSerializer,
     ZoneSerializer, ZoneCreateSerializer, ZoneAlertSerializer,
-    DroneSimulationSerializer, AlertSerializer, DroneStateSerializer,
+    DroneSimulationSerializer
 )
 
 @api_view(['GET'])
