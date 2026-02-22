@@ -9,5 +9,6 @@ router.register(r"alerts", views.ZoneAlertViewSet)
 router.register(r"drone", views.DroneViewSet)
 
 urlpatterns = [
+    path("test-redis/", views.test_redis),
     path("", include(router.urls)),
 ]

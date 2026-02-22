@@ -2,13 +2,36 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from django.utils import timezone
+from channels.layers import get_channel_layer
+import asyncio
+import traceback
+import os
 
-from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation
+from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation, Alert, DroneState
 from .serializers import (
     VesselSerializer, VesselDetailSerializer, VesselPositionSerializer,
     ZoneSerializer, ZoneCreateSerializer, ZoneAlertSerializer,
-    DroneSimulationSerializer,
+    DroneSimulationSerializer, AlertSerializer, DroneStateSerializer,
 )
+
+@api_view(['GET'])
+def test_redis(request):
+    try:
+        channel_layer = get_channel_layer()
+        
+        async def _test():
+            await channel_layer.send("test_channel", {"type": "test.message"})
+            
+        asyncio.run(_test())
+        return Response({"status": "ok"})
+    except Exception as e:
+        return Response({
+            "status": "error", 
+            "error": str(e), 
+            "traceback": traceback.format_exc(),
+            "redis_url": os.environ.get("REDIS_URL")
+        })
+
 class VesselViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for vessels."""
     queryset = Vessel.objects.all()
