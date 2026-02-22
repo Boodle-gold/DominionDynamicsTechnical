@@ -3,6 +3,9 @@
 Hello!
 This repo contains the code for the backend and front end of my technical assesment.
 
+The published version of this which is hosted on Vercel (frontend) and Render (backend)
+dominion-dynamics-technical.vercel.app, you can visit it here to play around with it! 
+
 The goal of the proejct was to represent, and monitor, live ship traffic in the Baltic sea
 
 # Features:
