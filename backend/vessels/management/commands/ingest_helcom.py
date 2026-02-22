@@ -16,40 +16,60 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"CSV file not found at {csv_path}"))
             return
 
-        ports_added = 0
-        ports_updated = 0
-        
+        # We first group the rows by locode to compute a geographic centroid
+        bounds = settings.BALTIC_BOUNDS
+        grouped_ports = {}
+
         with open(csv_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f, delimiter=';')
             for row in reader:
-                # CSV Headers: Port country;Port name;Port code;Port location;Latitude;Longitude;Port salinity min;Port salinity max;Target category
                 try:
                     name = row["Port name"].strip()
                     country = row["Port country"].strip()
                     locode = row["Port code"].strip()
-                    # create a unique HELCOM string from locode + site
-                    helcom_id = f"{locode}-{row['Port location'].strip()}".replace(' ', '_')
                     
                     lat = float(row["Latitude"])
                     lng = float(row["Longitude"])
                     
-                    port, created = Port.objects.update_or_create(
-                        helcom_id=helcom_id,
-                        defaults={
+                    if locode not in grouped_ports:
+                        grouped_ports[locode] = {
                             "name": name,
                             "country": country,
-                            "latitude": lat,
-                            "longitude": lng,
-                            "locode": locode,
+                            "lats": [],
+                            "lngs": []
                         }
-                    )
-                    if created:
-                        ports_added += 1
-                    else:
-                        ports_updated += 1
+                    
+                    grouped_ports[locode]["lats"].append(lat)
+                    grouped_ports[locode]["lngs"].append(lng)
                 except Exception as e:
                     self.stdout.write(self.style.WARNING(f"Failed to parse row: {row} - {e}"))
-                
-        self.stdout.write(self.style.SUCCESS(f"Successfully ingrained {ports_added} new ports into the database."))
-        self.stdout.write(self.style.SUCCESS(f"Updated {ports_updated} existing ports."))
+
+        self.stdout.write(f"Parsed {len(grouped_ports)} unique ports from CSV. Proceeding to filter and save...")
+
+        # Clear existing ports to cleanly handle the deduplication
+        Port.objects.all().delete()
+        
+        ports_added = 0
+        
+        for locode, data in grouped_ports.items():
+            avg_lat = sum(data["lats"]) / len(data["lats"])
+            avg_lng = sum(data["lngs"]) / len(data["lngs"])
+            
+            # Filter out ports outside the Baltic Sea bounding box
+            if not (bounds["min_lat"] <= avg_lat <= bounds["max_lat"] and bounds["min_lng"] <= avg_lng <= bounds["max_lng"]):
+                continue
+
+            helcom_id = f"HELCOM-{locode.replace(' ', '_')}"
+
+            Port.objects.create(
+                helcom_id=helcom_id,
+                name=data["name"],
+                country=data["country"],
+                latitude=avg_lat,
+                longitude=avg_lng,
+                locode=locode,
+            )
+            ports_added += 1
+
+        self.stdout.write(self.style.SUCCESS(f"Successfully ingrained {ports_added} localized Baltic ports into the database."))
         self.stdout.write(self.style.SUCCESS(f"Total ports tracked: {Port.objects.count()}"))

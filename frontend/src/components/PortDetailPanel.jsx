@@ -18,45 +18,22 @@ export default function PortDetailPanel({ port, onClose }) {
                 </button>
             </div>
 
-            <div className="detail-content">
-                <div className="metadata-grid">
-                    <div className="meta-item">
-                        <span className="label">UN/LOCODE</span>
-                        <span className="value">{port.locode || 'N/A'}</span>
-                    </div>
-                    <div className="meta-item">
-                        <span className="label">HELCOM API ID</span>
-                        <span className="value" style={{ fontSize: '0.9em' }}>{port.helcom_id || 'N/A'}</span>
-                    </div>
-                    <div className="meta-item">
-                        <span className="label">Latitude</span>
-                        <span className="value">{port.latitude.toFixed(4)}°N</span>
-                    </div>
-                    <div className="meta-item">
-                        <span className="label">Longitude</span>
-                        <span className="value">{port.longitude.toFixed(4)}°E</span>
+            <div className="detail-content" style={{ padding: '4px 12px 12px 12px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <div className="action-section" style={{ marginTop: '24px', marginBottom: '24px' }}>
+                    <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '16px', borderRadius: '4px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)' }}>Water Quality</span>
+                            <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#ffffff' }}>Nominal</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)' }}>Traffic Congestion</span>
+                            <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#ffffff' }}>Low</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="action-section" style={{ marginTop: '20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                        <Shield size={16} color="#00e5ff" />
-                        <h3 style={{ margin: 0, fontSize: '14px', color: '#00e5ff' }}>Environmental Status</h3>
-                    </div>
-                    <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.7)', margin: '0 0 12px 0', lineHeight: 1.4 }}>
-                        Data sourced securely from the Baltic Marine Environment Protection Commission (HELCOM) open data portal.
-                    </p>
-
-                    <div style={{ background: 'rgba(0, 229, 255, 0.1)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(0, 229, 255, 0.2)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.8)' }}>Water Quality Index</span>
-                            <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#00e5ff' }}>Nominal</span>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.8)' }}>Traffic Congestion</span>
-                            <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#4ade80' }}>Low</span>
-                        </div>
-                    </div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 'auto', marginBottom: 4, fontFamily: 'var(--font-mono)' }}>
+                    {port.latitude?.toFixed(5)}, {port.longitude?.toFixed(5)}
                 </div>
             </div>
         </div>

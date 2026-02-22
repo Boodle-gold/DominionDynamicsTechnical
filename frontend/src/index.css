@@ -1,8 +1,7 @@
 /* ============================================
-   Arctic Vessel & Rare Earth Deposit Tracker
+   Boating in the Baltics
    Dark maritime theme with glassmorphism
    ============================================ */
-
 :root {
   /* Color Palette */
   --bg-primary: #000000;
@@ -356,6 +355,11 @@ body,
   z-index: 80;
   box-shadow: var(--shadow-panel);
   animation: slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.port-panel {
+  border-radius: var(--radius-sm);
+  padding: 8px;
 }
 
 @keyframes slide-in {

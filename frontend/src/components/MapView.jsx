@@ -216,6 +216,16 @@ export default function MapView({
                 minzoom: 5,
             });
 
+            // Create Anchor icon for ports
+            const anchorSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>`;
+            const anchorImg = new Image(24, 24);
+            anchorImg.onload = () => {
+                if (!map.hasImage('port-anchor')) {
+                    map.addImage('port-anchor', anchorImg);
+                }
+            };
+            anchorImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(anchorSvg);
+
             // Ports layer
             map.addSource('ports', {
                 type: 'geojson',
@@ -223,18 +233,17 @@ export default function MapView({
             });
             map.addLayer({
                 id: 'ports-layer',
-                type: 'circle',
+                type: 'symbol',
                 source: 'ports',
-                paint: {
-                    'circle-radius': [
+                layout: {
+                    'icon-image': 'port-anchor',
+                    'icon-size': [
                         'interpolate', ['linear'], ['zoom'],
-                        4, 4,
-                        8, 6,
-                        12, 8
+                        4, 0.6,
+                        8, 0.8,
+                        12, 1.2
                     ],
-                    'circle-color': '#00e5ff',
-                    'circle-stroke-width': 2,
-                    'circle-stroke-color': '#ffffff',
+                    'icon-allow-overlap': true,
                 },
             });
 

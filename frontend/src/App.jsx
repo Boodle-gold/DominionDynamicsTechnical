@@ -154,8 +154,8 @@ export default function App() {
                         <polygon points="92,32 92,92 32,62" />
                     </svg>
                     <div className="logo-text">
-                        <div className="logo-line">DOMINION</div>
-                        <div className="logo-line">DYNAMICS</div>
+                        <div className="logo-line">BOATING IN</div>
+                        <div className="logo-line">THE BALTICS</div>
                     </div>
                 </div>
                 <div className="status-indicator">
