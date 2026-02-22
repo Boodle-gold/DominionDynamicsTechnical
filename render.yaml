@@ -1,0 +1,21 @@
+databases:
+  - name: channels-redis
+    plan: free
+    region: ohio
+    ipAllowList: []
+
+services:
+  - type: web
+    name: dominion-dynamics-backend
+    env: python
+    plan: free
+    region: ohio
+    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "cd backend && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: REDIS_URL
+        fromDatabase:
+          name: channels-redis
+          property: connectionString

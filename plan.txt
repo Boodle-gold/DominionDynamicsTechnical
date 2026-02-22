@@ -1,0 +1,86 @@
+I am participating in the Dominion Dynamics Technical Assessment.
+I have selected Problem 1 - Map-based Data Visualization.
+
+The end goal of the project is to have a map of new york city harbor 
+that shows the location of all the boats in the harbor in real time.
+- The boats will be moving around the map
+- The boats will be colored based on their weight
+- The boats will be labeled with their name
+- The boats will be clickable and will show a popup with a detail view
+    - That detail view will have a closer look option that deploys a simulated drone
+    that will then fly on the map.
+
+Software Engineer Technical Assessment
+Design & Assessment Philosophy
+Dominion Dynamics presents several technical challenges, and we request that you select a single problem
+scenario for delivery. We encourage you to expand upon the minimum assessment criteria to showcase your
+unique focus, interests, and capabilities. Each assessment requires full-stack code delivery (front-end and
+back-end, with supporting services and helpers). We favor candidates with a familiarity with React and
+Python/Django, but encourage you to use the tools and languages with which you can best demonstrate your
+capabilities.
+After your submission, we will review it and discuss your process, code quality, and delivery results with you.
+Our evaluation is intentionally open-ended. Successful candidates will demonstrate:
+• An ability to conceive and design end-to-end systems, not just complete tactical tasks.
+• Clarity of thinking and a clear, concise written explanation of their approach, tradeoffs, and architecture.
+• Curiosity and self-direction.
+• Practical software engineering judgment: maintainability, modularity, and data flow.
+Assessment Deliverables
+A successful submission will contain all of the following elements:
++ Working code
++ A repo posted to GitHub
++ A README included in the repository with a written architecture/design explanation.
++ Delivery within 72 hours of downloading the evaluation from the portal.
++ A video demo < 5 mins
+Evaluation Criteria
+We will evaluate submissions for all of the following:
++ Data Models & Data Structures
++ Quality and clarity of reasoning
++ Architecture and tradeoffs
++ Code structure and readability
++ UX clarity
++ Application performance considerations
++ Ability to communicate technical decision-making
++ Timely delivery
++ Curiosity, creativity, thoughtfulness, and ambition
++ Domain knowledge
+During our follow-up conversation, we will assess both the code for creativity and excellence and our
+discussion for cultural alignment. Please familiarize yourself with our Company Values. We are interested in
+identifying team members with high agency, low ego, and a deep passion for our mission.
+Assessment Scenarios:
+Problem 1 - Map-based Data Visualization
+Display publicly available data on a map interface in real-time with at least one interactive tool or view (i.e,
+allow the creation of polygons/zones on the map that interact with the real-time data) and at least one
+simulated asset (drone or vehicle movement).
+Required:
+- Write API queries/subscriptions to ingest a publicly available data source (Aircraft, Public transit, etc.)
+- Visualize the objects in real-time on a map
+- Objects interact with the zones (eg, an object turns red and the application sends an alert when it enters a
+zone)
+- Visualize the historical path/route of an object when it is clicked
+- Provide a detailed panel for an object when it is clicked
+----------
+Problem 2 - Object Detection and Analysis
+Create an application that ingests media streams of at least two types and outputs a history of objects/event
+detections that occurred within them. Sensor or data fusion between the two sources is ideal. Create
+inferences and analyses from the model output that users can engage with.
+Required:
+- Use a computer vision model that detects objects/events in a live stream or video
+- Keep a record of objects/events detected over time
+- Take snapshots of the stream/video when certain events occur
+- Trigger alerts when detections occur
+----------
+Problem 3 - LLM-based User Interface
+Create a map-based, full-stack application that allows users to create, place, view, and filter entities using
+voice or typed commands (“show me assets in the current zoom window”, “show me weather overlays for the
+current zoom window”, “show active flights in the zoom window”, “show me the historic location of this
+asset”, “place a marker at x location).
+Required:
+- Ambiguity handling
+- Audit, historic event log
+- Serialized actions - a single request performs multiple actions (i.e., adjusts frame, filters and isolates
+the asset, opens details).
+If you have any questions about the assessment details, please send a single email to
+ashleybradford@ddc2.com. To ensure fairness across applications, we will respond to only one email per
+application.
+The results of your evaluation will neither be helped nor hindered by a request for clarification.
+Good Luck!
