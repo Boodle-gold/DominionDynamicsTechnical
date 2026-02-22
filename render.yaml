@@ -11,7 +11,7 @@ services:
     plan: free
     region: ohio
     buildCommand: "cd backend && pip install -r requirements.txt && python manage.py migrate"
-    startCommand: "cd backend && daphne -b 0.0.0.0 -p $PORT config.asgi:application"
+    startCommand: "cd backend && python manage.py seed_vessels && python manage.py move_vessels & daphne -b 0.0.0.0 -p $PORT config.asgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.0
