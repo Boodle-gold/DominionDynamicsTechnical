@@ -25,5 +25,4 @@ ingests to the front end, which then recieves it through established WebSocket c
 
 The logic behind this system was that I wanted one way to communicate from the frontend to the backend,
 and another way to communicate from the backend to the frontend to enforce modularity for communication.
-I have never used Django before and if anything this was an incredibly fun learning experience and I'm glad 
-to have been able to get something working. I hope you enjoy and thank you for your consideration.
+I have never used Django before and if anything this was an incredibly fun learning experience. I hope you enjoy and thank you for your consideration.
