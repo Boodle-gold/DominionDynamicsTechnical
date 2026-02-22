@@ -1,10 +1,10 @@
-databases:
-  - name: channels-redis
+services:
+  - type: redis
+    name: channels-redis
     plan: free
     region: ohio
     ipAllowList: []
 
-services:
   - type: web
     name: dominion-dynamics-backend
     env: python
@@ -16,6 +16,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.13.0
       - key: REDIS_URL
-        fromDatabase:
+        fromService:
+          type: redis
           name: channels-redis
           property: connectionString
