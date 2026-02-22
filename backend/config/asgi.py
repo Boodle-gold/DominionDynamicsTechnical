@@ -12,11 +12,15 @@ django_asgi_app = get_asgi_application()
 
 from vessels.routing import websocket_urlpatterns
 
+from channels.security.websocket import AllowedHostsOriginValidator
+
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        "websocket": AuthMiddlewareStack(
-            URLRouter(websocket_urlpatterns)
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(
+                URLRouter(websocket_urlpatterns)
+            )
         ),
     }
 )
