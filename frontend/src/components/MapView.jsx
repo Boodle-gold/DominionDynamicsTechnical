@@ -24,6 +24,8 @@ export default function MapView({
     onZoneCreated,
     historyTrail,
     droneState,
+    ports,
+    onSelectPort,
 }) {
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
@@ -212,6 +214,42 @@ export default function MapView({
                     'text-halo-width': 1.5,
                 },
                 minzoom: 5,
+            });
+
+            // Ports layer
+            map.addSource('ports', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] },
+            });
+            map.addLayer({
+                id: 'ports-layer',
+                type: 'circle',
+                source: 'ports',
+                paint: {
+                    'circle-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        4, 4,
+                        8, 6,
+                        12, 8
+                    ],
+                    'circle-color': '#00e5ff',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff',
+                },
+            });
+
+            // Click Handler for Ports
+            map.on('click', 'ports-layer', (e) => {
+                const feature = e.features[0];
+                if (feature) {
+                    onSelectPort?.(feature.properties.portId);
+                }
+            });
+            map.on('mouseenter', 'ports-layer', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'ports-layer', () => {
+                map.getCanvas().style.cursor = '';
             });
 
             // History trail source+layer
@@ -502,6 +540,30 @@ export default function MapView({
 
         source.setData({ type: 'FeatureCollection', features });
     }, [vessels, selectedVesselId, vesselInZone, mapLoaded]);
+
+    // Update ports on map
+    useEffect(() => {
+        if (!mapLoaded || !mapRef.current) return;
+        const map = mapRef.current;
+        const source = map.getSource('ports');
+        if (!source || !ports) return;
+
+        const features = ports
+            .filter(p => p.latitude && p.longitude)
+            .map(p => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [p.longitude, p.latitude],
+                },
+                properties: {
+                    portId: p.id,
+                    name: p.name,
+                },
+            }));
+
+        source.setData({ type: 'FeatureCollection', features });
+    }, [ports, mapLoaded]);
 
     // Pan to selected vessel
     useEffect(() => {

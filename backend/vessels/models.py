@@ -112,3 +112,20 @@ class DroneSimulation(models.Model):
 
     def __str__(self):
         return f"Drone → {self.vessel.name} ({self.status})"
+
+
+class Port(models.Model):
+    """HELCOM Baltic Sea Port Data."""
+    name = models.CharField(max_length=200)
+    country = models.CharField(max_length=100, blank=True, default="")
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    locode = models.CharField(max_length=20, blank=True, default="", help_text="UN/LOCODE")
+    helcom_id = models.CharField(max_length=50, unique=True, help_text="Unique HELCOM identifier")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name} ({self.country})"

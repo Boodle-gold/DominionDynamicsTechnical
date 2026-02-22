@@ -7,11 +7,11 @@ import asyncio
 import traceback
 import os
 
-from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation
+from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation, Port
 from .serializers import (
     VesselSerializer, VesselDetailSerializer, VesselPositionSerializer,
     ZoneSerializer, ZoneCreateSerializer, ZoneAlertSerializer,
-    DroneSimulationSerializer
+    DroneSimulationSerializer, PortSerializer
 )
 
 @api_view(['GET'])
@@ -76,6 +76,12 @@ class DroneViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for drone simulations."""
     queryset = DroneSimulation.objects.all()
     serializer_class = DroneSimulationSerializer
+
+
+class PortViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for HELCOM ports."""
+    queryset = Port.objects.all()
+    serializer_class = PortSerializer
 
     @action(detail=False, methods=["post"])
     def deploy(self, request):

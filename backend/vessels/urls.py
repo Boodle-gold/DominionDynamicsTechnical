@@ -7,7 +7,7 @@ router.register(r"vessels", views.VesselViewSet)
 router.register(r"zones", views.ZoneViewSet)
 router.register(r"alerts", views.ZoneAlertViewSet)
 router.register(r"drone", views.DroneViewSet)
-
+router.register(r"ports", views.PortViewSet)
 urlpatterns = [
     path("test-redis/", views.test_redis),
     path("", include(router.urls)),

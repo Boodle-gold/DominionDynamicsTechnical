@@ -3,9 +3,11 @@ import MapView from './components/MapView.jsx';
 import VesselDetailPanel from './components/VesselDetailPanel.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import AlertPanel from './components/AlertPanel.jsx';
+import PortDetailPanel from './components/PortDetailPanel.jsx';
 import { DroneStatusBar, useDrone, DRONE_BASE } from './components/DroneAnimation.jsx';
 import { useWebSocket } from './hooks/useWebSocket.js';
 import { useVessels } from './hooks/useVessels.js';
+import { usePorts } from './hooks/usePorts.js';
 import { fetchVessels, fetchVesselHistory, fetchZones, deleteZone as apiDeleteZone, deployDrone as apiDeployDrone, fetchAlerts } from './services/api.js';
 
 export default function App() {
@@ -20,6 +22,7 @@ export default function App() {
     } = useVessels();
 
     const { connected } = useWebSocket(handleWSMessage);
+    const { ports, selectedPortId, selectedPort, setSelectedPortId } = usePorts();
 
     const [zones, setZones] = useState([]);
     const [alerts, setAlerts] = useState([]);
@@ -63,16 +66,26 @@ export default function App() {
 
     const handleSelectVessel = useCallback((id, zoom = 6) => {
         setSelectedVesselId(id);
+        setSelectedPortId(null);
         setFocusZoomLevel(zoom);
         setHistoryTrail(null);
         setShowingHistory(false);
-    }, [setSelectedVesselId]);
+    }, [setSelectedVesselId, setSelectedPortId]);
+
+    const handleSelectPort = useCallback((id, zoom = 8) => {
+        setSelectedPortId(id);
+        setSelectedVesselId(null);
+        setFocusZoomLevel(zoom);
+        setHistoryTrail(null);
+        setShowingHistory(false);
+    }, [setSelectedPortId, setSelectedVesselId]);
 
     const handleCloseDetail = useCallback(() => {
         setSelectedVesselId(null);
+        setSelectedPortId(null);
         setHistoryTrail(null);
         setShowingHistory(false);
-    }, [setSelectedVesselId]);
+    }, [setSelectedVesselId, setSelectedPortId]);
 
     const handleViewHistory = useCallback(async () => {
         if (showingHistory) {
@@ -165,6 +178,8 @@ export default function App() {
                     onZoneCreated={handleZoneCreated}
                     historyTrail={historyTrail}
                     droneState={droneState}
+                    ports={ports}
+                    onSelectPort={handleSelectPort}
                 />
 
                 <Sidebar
@@ -188,6 +203,13 @@ export default function App() {
                     onViewHistory={handleViewHistory}
                     onDeployDrone={handleDeployDrone}
                     showingHistory={showingHistory}
+                />
+            )}
+
+            {selectedPort && (
+                <PortDetailPanel
+                    port={selectedPort}
+                    onClose={handleCloseDetail}
                 />
             )}
 

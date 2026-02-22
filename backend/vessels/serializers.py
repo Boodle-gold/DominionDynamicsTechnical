@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation
+from .models import Vessel, VesselPosition, Zone, ZoneAlert, DroneSimulation, Port
 
 
 class VesselPositionSerializer(serializers.ModelSerializer):
@@ -82,4 +82,13 @@ class DroneSimulationSerializer(serializers.ModelSerializer):
             "current_latitude", "current_longitude",
             "target_latitude", "target_longitude",
             "created_at",
+        ]
+
+
+class PortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Port
+        fields = [
+            "id", "name", "country", "latitude", "longitude", 
+            "locode", "helcom_id", "created_at"
         ]
