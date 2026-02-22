@@ -92,3 +92,4 @@ def check_vessel_zones(vessel, latitude, longitude):
             )
 
     return alerts
+

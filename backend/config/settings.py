@@ -140,3 +140,4 @@ CANADA_BOUNDS = {
     "min_lng": -140.0,
     "max_lng": -50.0,
 }
+

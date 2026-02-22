@@ -78,3 +78,4 @@ class VesselConsumer(AsyncWebsocketConsumer):
                 vessel_data["course"] = pos.course
             vessels.append(vessel_data)
         return vessels
+

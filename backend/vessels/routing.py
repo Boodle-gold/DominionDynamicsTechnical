@@ -4,3 +4,4 @@ from . import consumers
 websocket_urlpatterns = [
     re_path(r"ws/vessels/$", consumers.VesselConsumer.as_asgi()),
 ]
+

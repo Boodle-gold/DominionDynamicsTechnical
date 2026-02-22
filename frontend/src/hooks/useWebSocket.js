@@ -71,3 +71,4 @@ export function useWebSocket(onMessage) {
 
     return { connected };
 }
+

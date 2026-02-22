@@ -122,3 +122,4 @@ class Command(BaseCommand):
 
         except KeyboardInterrupt:
             self.stdout.write("\nSimulation stopped.")
+

@@ -92,3 +92,4 @@ class PortSerializer(serializers.ModelSerializer):
             "id", "name", "country", "latitude", "longitude", 
             "locode", "helcom_id", "created_at"
         ]
+

@@ -12,3 +12,4 @@ urlpatterns = [
     path("test-redis/", views.test_redis),
     path("", include(router.urls)),
 ]
+

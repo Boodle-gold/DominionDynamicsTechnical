@@ -199,3 +199,4 @@ class Command(BaseCommand):
             defaults=defaults,
         )
         self.stdout.write(f"  Updated static data: {name}")
+

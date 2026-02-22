@@ -62,3 +62,4 @@ export function getShipTypeLabel(type) {
 // Backward-compat aliases used by Sidebar/VesselDetailPanel
 export const getWeightCategory = getSpeedLabel;
 export const formatTonnage = (t) => `${parseFloat(t || 0).toLocaleString()} GT`;
+

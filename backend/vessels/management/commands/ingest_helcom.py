@@ -73,3 +73,4 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f"Successfully ingrained {ports_added} localized Baltic ports into the database."))
         self.stdout.write(self.style.SUCCESS(f"Total ports tracked: {Port.objects.count()}"))
+

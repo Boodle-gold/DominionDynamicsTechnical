@@ -51,3 +51,4 @@ export default function AlertPanel({ alerts }) {
         </div>
     );
 }
+

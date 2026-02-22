@@ -12,3 +12,4 @@ class Command(BaseCommand):
         Vessel.objects.all().delete()
         
         self.stdout.write(self.style.SUCCESS(f"Deleted {vessel_count} vessels and {position_count} positions."))
+

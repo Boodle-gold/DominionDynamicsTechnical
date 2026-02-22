@@ -206,3 +206,4 @@ export function DroneStatusBar({ droneState, onDismiss }) {
         </div>
     );
 }
+

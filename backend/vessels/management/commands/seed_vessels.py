@@ -226,3 +226,4 @@ class Command(BaseCommand):
                 self.stdout.write(f"  Exists:  {vessel.name}")
 
         self.stdout.write(self.style.SUCCESS(f"Done! {Vessel.objects.count()} vessels in database."))
+
